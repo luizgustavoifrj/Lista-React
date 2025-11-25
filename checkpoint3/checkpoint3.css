@@ -1,54 +1,173 @@
-/* App.css (Completo, com as novas adições) */
+/* App.css - Estilo Spotify Dark Mode */
+:root {
+  --bg-black: #000000;
+  --bg-dark-gray: #121212;
+  --bg-light-gray: #282828;
+  --bg-elevated: #242424;
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  --spotify-green: #1db954;
+  --spotify-green-hover: #1ed760;
+  --player-height: 90px;
+  --sidebar-width: 240px;
+}
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif;
-  background-color: #000;
-  color: white;
   margin: 0;
   padding: 0;
+  font-family: 'Circular', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  background-color: var(--bg-black);
+  color: var(--text-primary);
+  overflow: hidden; /* App style */
 }
 
-/* --- Layout Principal (CSS Grid) --- */
+/* --- Layout Grid --- */
 .spotify-layout {
   display: grid;
-  grid-template-columns: 250px 1fr;
-  grid-template-rows: 1fr 80px;
   grid-template-areas:
-    'sidebar main'
-    'player player';
+    "sidebar main"
+    "player player";
+  grid-template-columns: var(--sidebar-width) 1fr;
+  grid-template-rows: calc(100vh - var(--player-height)) var(--player-height);
   height: 100vh;
-  overflow: hidden;
 }
 
+/* --- Sidebar --- */
 .spotify-sidebar {
   grid-area: sidebar;
-  background-color: #000;
-  padding: 20px;
-  border-right: 1px solid #282828;
-  overflow-y: auto;
-}
-
-.spotify-main-content {
-  grid-area: main;
+  background-color: var(--bg-black);
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  background: linear-gradient(to bottom, #222, #121212);
+  gap: 20px;
 }
 
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+.spotify-logo-icon { font-size: 32px; }
+.spotify-logo-text { font-weight: bold; font-size: 24px; letter-spacing: -1px;}
+
+.sidebar-nav ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 15px;}
+.sidebar-nav li { 
+  display: flex; align-items: center; gap: 15px; 
+  color: var(--text-secondary); font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 14px;
+}
+.sidebar-nav li:hover, .sidebar-nav li.active { color: var(--text-primary); }
+.sidebar-nav .icon { font-size: 20px; }
+
+.playlists-section { flex: 1; overflow-y: auto; border-top: 1px solid #282828; padding-top: 20px;}
+.playlist-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;}
+.playlist-header h3 { font-size: 12px; letter-spacing: 1px; color: var(--text-secondary); margin: 0; }
+.add-playlist-btn { background: none; border: none; color: var(--text-secondary); font-size: 24px; cursor: pointer;}
+.add-playlist-btn:hover { color: var(--text-primary); }
+
+.playlist-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.playlist-list li { color: var(--text-secondary); font-size: 14px; cursor: pointer; }
+.playlist-list li:hover { color: var(--text-primary); }
+
+.playlist-form input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--text-secondary);
+  color: white;
+  padding: 5px 0;
+  outline: none;
+}
+
+/* --- Main Content --- */
+.spotify-main-content {
+  grid-area: main;
+  background-color: var(--bg-dark-gray);
+  overflow-y: auto;
+  position: relative;
+  border-radius: 8px; /* Arredondado estilo app moderno */
+  margin: 8px 8px 0 0;
+}
+
+.hero-gradient {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 300px;
+  background: linear-gradient(180deg, #400000 0%, var(--bg-dark-gray) 100%); /* Um vermelho escuro estilo capa */
+  z-index: 0;
+}
+
+/* --- Header --- */
 .spotify-header {
-  padding: 20px;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
-  z-index: 10;
+  height: 64px;
+  background-color: rgba(0,0,0,0.5); /* Semi-transparente */
+  backdrop-filter: blur(20px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 32px;
+  z-index: 100;
 }
 
-.spotify-main {
-  padding: 20px;
+.header-navigation { display: flex; gap: 16px; }
+.nav-arrow {
+  background-color: rgba(0,0,0,0.7);
+  border: none; color: white; border-radius: 50%; width: 32px; height: 32px; cursor: pointer;
 }
 
+.busca-container {
+  display: flex; align-items: center; background-color: white; border-radius: 500px; padding: 6px 12px; min-width: 300px;
+}
+.busca-icon { color: #121212; font-size: 18px; margin-right: 10px; }
+.busca-input { border: none; outline: none; font-size: 14px; width: 100%; color: #000; font-weight: 500;}
+
+.user-profile .user-avatar {
+  width: 32px; height: 32px; background-color: #535353; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid black;
+}
+
+/* --- Lista de Músicas (Estilo Tabela) --- */
+.spotify-main { position: relative; z-index: 1; padding: 20px 32px; }
+.spotify-main h2 { font-size: 32px; margin-bottom: 20px; }
+
+.musicas-grid { display: flex; flex-direction: column; }
+
+.musica-row {
+  display: grid;
+  grid-template-columns: 40px 4fr 3fr 40px; /* Colunas fixas */
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.musica-row:hover { background-color: rgba(255,255,255,0.1); }
+.musica-row.active { background-color: rgba(255,255,255,0.2); }
+
+/* Lógica do ícone de play no hover */
+.col-index { font-size: 14px; color: var(--text-secondary); text-align: center;}
+.play-icon-hover { display: none; color: white; }
+.musica-row:hover .col-index { font-size: 0; }
+.musica-row:hover .play-icon-hover { display: block; font-size: 14px; }
+.musica-row.active .col-titulo .nome-musica { color: var(--spotify-green); }
+
+.col-titulo { display: flex; align-items: center; gap: 16px; }
+.capa-album { width: 40px; height: 40px; border-radius: 4px; object-fit: cover;}
+.info-text { display: flex; flex-direction: column; }
+.nome-musica { font-size: 16px; font-weight: normal; color: white; }
+.nome-artista { font-size: 14px; color: var(--text-secondary); }
+
+.col-album { color: var(--text-secondary); font-size: 14px; }
+
+.botao-favorito { background: none; border: none; font-size: 16px; color: var(--text-secondary); cursor: pointer; }
+.botao-favorito:hover { color: white; }
+.botao-favorito.favoritado { color: var(--spotify-green); }
+
+/* --- Player Footer --- */
 .spotify-player {
   grid-area: player;
   background-color: #181818;
@@ -56,152 +175,31 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 16px;
+  z-index: 200;
 }
 
-/* --- Componente Playlists (8a) --- */
-.spotify-sidebar h2 {
-  font-size: 20px;
-  margin-top: 0;
-}
-.spotify-sidebar ul {
-  list-style: none;
-  padding: 0;
-}
-.spotify-sidebar li {
-  padding: 8px 0;
-  cursor: pointer;
-  color: #b3b3b3;
-  transition: color 0.2s;
-}
-.spotify-sidebar li:hover {
-  color: white;
-}
-.playlist-form {
-  display: flex;
-  margin-top: 20px;
-}
-.playlist-form input {
-  flex: 1;
-  padding: 8px;
-  border: none;
-  border-radius: 4px 0 0 4px;
-}
-.playlist-form button {
-  padding: 8px 12px;
-  border: none;
-  background-color: #1db954;
-  color: white;
-  font-weight: bold;
-  border-radius: 0 4px 4px 0;
-  cursor: pointer;
-}
+.player-left { display: flex; align-items: center; width: 30%; gap: 14px;}
+.player-capa { width: 56px; height: 56px; border-radius: 4px; }
+.player-left .player-info h4 { margin: 0; font-size: 14px; color: white; font-weight: normal;}
+.player-left .player-info p { margin: 0; font-size: 11px; color: var(--text-secondary); margin-top: 3px;}
 
-/* --- Componente Header (7a) --- */
-.busca-input {
-  width: 300px;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 20px;
-  font-size: 14px;
-  background-color: #282828;
-  color: white;
+.player-center { width: 40%; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.player-controls { display: flex; align-items: center; gap: 20px; }
+.control-btn { background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 16px; }
+.control-btn:hover { color: white; }
+.play-btn-circle {
+  width: 32px; height: 32px; background-color: white; border-radius: 50%; border: none;
+  display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; transition: transform 0.1s;
 }
+.play-btn-circle:hover { transform: scale(1.05); }
 
-/* --- ListaMusicas (3c) e MusicaItem (4b) --- */
-.lista-musicas {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.musica-item {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  border-radius: 6px;
-  transition: background-color 0.2s ease;
-  cursor: pointer;
-}
-.musica-item:hover {
-  background-color: #282828;
-}
-.musica-item .botao-play-item {
-  background: transparent;
-  border: 1px solid white;
-  color: white;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  font-size: 12px;
-  cursor: pointer;
-  margin-right: 15px;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-.musica-item:hover .botao-play-item {
-  opacity: 1;
-}
-.musica-info {
-  flex: 1;
-}
-.musica-info h3 {
-  margin: 0;
-  font-size: 16px;
-}
-.musica-info p {
-  margin: 0;
-  margin-top: 4px;
-  color: #b3b3b3;
-}
+.progress-container { width: 100%; display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-secondary); }
+.progress-bar-bg { flex: 1; height: 4px; background-color: #535353; border-radius: 2px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background-color: white; border-radius: 2px; }
+.player-center:hover .progress-bar-fill { background-color: var(--spotify-green); }
 
-/* --- Player (6a) e Barra de Progresso --- */
-.player-info {
-  flex: 1;
-  min-width: 180px;
-}
-.player-info h3 { margin: 0; font-size: 14px; }
-.player-info p { margin: 0; font-size: 12px; color: #b3b3b3; }
-
-.player-controles {
-  flex: 2; /* Mais espaço para os controles */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.botao-play-principal {
-  background-color: #1db954;
-  color: black;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 8px; /* Espaço para a barra de progresso */
-}
-.player-volume {
-  flex: 1;
-  min-width: 180px;
-}
-
-/* NOVO: Estilos da Barra de Progresso */
-.progress-bar-container {
-  width: 100%;
-  max-width: 400px; /* Limita o tamanho da barra */
-  height: 4px;
-  background-color: #535353;
-  border-radius: 2px;
-  cursor: pointer;
-}
-
-.progress-bar {
-  height: 100%;
-  background-color: #1db954; /* Cor verde do Spotify */
-  border-radius: 2px;
-  width: 0%; /* Começa em 0 */
-  transition: width 0.1s linear; /* Animação suave */
-}
+.player-right { width: 30%; display: flex; justify-content: flex-end; align-items: center; gap: 10px; }
+.volume-slider { width: 100px; height: 4px; -webkit-appearance: none; background: #535353; border-radius: 2px; outline: none; }
+.volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; background: white; border-radius: 50%; cursor: pointer; visibility: hidden; }
+.player-right:hover .volume-slider::-webkit-slider-thumb { visibility: visible; }
